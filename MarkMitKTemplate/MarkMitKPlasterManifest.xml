@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plasterManifest
+  schemaVersion="1.0" xmlns="http://www.microsoft.com/schemas/PowerShell/Plaster/v1">
+  <metadata>
+    <name>MarkMitKPlasterTemplate</name>
+    <id>5713e99f-1790-4bb0-a7bc-01b67d02711f</id>
+    <version>0.0.1</version>
+    <title>MarkMitK working with Plaster</title>
+    <description>MarkMitK's Plaster Template</description>
+    <author>Mark Warneke &lt;mark.warneke@microsoft.com&gt;</author>
+    <tags></tags>
+  </metadata>
+  <parameters></parameters>
+  <content></content>
+</plasterManifest>
