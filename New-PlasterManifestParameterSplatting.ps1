@@ -3,9 +3,9 @@ $destination = @{
     Module = '.\MarkMitKModule'
 }
 
-Find-Module -Name Plaster -Repository PSGallery |
-    Install-Module -Verbose -Force
+Find-Module -Name Plaster -Repository PSGallery | Install-Module -Verbose -Force
 
+# Create folder structure if not exists based on destination hash
 foreach ($path in $destination.GetEnumerator()) {
     if (-Not (Test-Path -Path $path.Value)) {
         New-Item -Path $path.Value -ItemType Directory
