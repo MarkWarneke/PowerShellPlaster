@@ -3,7 +3,7 @@
   schemaVersion="1.0" xmlns="http://www.microsoft.com/schemas/PowerShell/Plaster/v1">
   <metadata>
     <name>MarkMitKPlasterTemplate</name>
-    <id>c302ec32-711d-45e7-bdaf-623a17fc56d8</id>
+    <id>ab857af6-8b6b-4fbd-9f50-e891447830e6</id>
     <version>0.0.1</version>
     <title>MarkMitK working with Plaster</title>
     <description>MarkMitK's Plaster Template</description>
