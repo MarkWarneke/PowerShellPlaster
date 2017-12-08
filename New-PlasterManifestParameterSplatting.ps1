@@ -1,6 +1,6 @@
 $destination = @{
-    Manifest ='.\MarkMitKPlasterManifestTemplate'
-    Module = '.\MarkMitKModule'
+    ManifestFolder ='.\MarkMitKPlasterManifestTemplate'
+    ModuleFolder = '.\MarkMitKModule'
 }
 
 Find-Module -Name Plaster -Repository PSGallery | Install-Module -Verbose -Force
@@ -13,7 +13,7 @@ foreach ($path in $destination.GetEnumerator()) {
 }
 
 $manifestProperties = @{
-    Path = "$($destination.ManifestFolder)\MarkMitKPlasterManifest.xml"
+    Path = "$($destination.ManifestFolder)\PlasterManifest.xml" # Name must be PlasterManifest in order to use Test-PlasterManifest
     Title = "MarkMitK working with Plaster"
     TemplateName = "MarkMitKPlasterTemplate"
     TemplateVersion = "0.0.1"
@@ -23,6 +23,8 @@ $manifestProperties = @{
 }
 
 New-PlasterManifest @manifestProperties
-code $destinationFolder
+# The value of the Path argument must refer to a file named 'plasterManifest.xml' or 'plasterManifest_<culture>.xml'. Change the Plaster manifest filename and' or 'plasterManifest_<culture>.xml'.
+Test-PlasterManifest $manifestProperties.Path 
+code $destination.ManifestFolder
 
-Invoke-Plaster -TemplatePath $($destination.Manifest) -DestinationPath $($destination.Module)
+Invoke-Plaster -TemplatePath $($destination.ManifestFolder) -DestinationPath $($destination.ModuleFolder)
