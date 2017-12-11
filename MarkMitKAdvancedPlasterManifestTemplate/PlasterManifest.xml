@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- http://overpoweredshell.com/Working-with-Plaster/ https://www.youtube.com/watch?v=16CYGTKH73U&t=2923s
+https://github.com/SQLDBAWithABeard/PlasterTemplate 
+ -->
+<plasterManifest schemaVersion="1.0" 
+        xmlns="http://www.microsoft.com/schemas/PowerShell/Plaster/v1">
+        <metadata>
+                <name>MarkMitKPlasterTemplate</name>
+                <id>ab857af6-8b6b-4fbd-9f50-e891447830e6</id>
+                <version>0.0.1</version>
+                <title>MarkMitK working with Plaster</title>
+                <description>MarkMitK's Plaster Template</description>
+                <author>Mark Warneke &lt;mark.warneke@microsoft.com&gt;</author>
+                <tags></tags>
+        </metadata>
+        <parameters>
+                <parameter name="FullName" type="text" prompt="Module author's name" />
+                <parameter name='ModuleName' type='text' prompt='Enter the name of the module'/>
+                <parameter name='ModuleDesc' type='text' prompt='Enter a description of the module (required for publishing to the PowerShell Gallery)'/>
+                <parameter name='Version' type='text' prompt='Enter the version number of the module' default='0.1.0'/>
+                <parameter name='FunctionName' type='text' prompt='Enter inital function name' store='text' />
+                <parameter name='GitName' type='user-fullname' prompt='Enter your full name' store='text' />
+
+                <parameter name='License' type='choice' prompt='Select a license (see http://choosealicense.com for help choosing):' default='0' store='text'>
+                        <choice label='&amp;None' help="No license." value="None"/>
+                        <choice label='&amp;GNU' help="Adds a GNU license file." value="GNU"/>
+                        <choice label='&amp;MIT' help="Adds a MIT license file." value="MIT"/>
+                </parameter>
+                <parameter name="FunctionFolders" type="multichoice" prompt="Please select folders to include" default='0,1'>
+                        <choice label="&amp;Public" help="Adds a public folder to module root" value="Public" />
+                        <choice label="&amp;Private" help="Adds a private folder to module root" value="Private" />
+                        <choice label="&amp;Classes" help="Adds a classes folder to module root" value="Classes" />
+                        <choice label="&amp;Binaries" help="Adds a binaries folder to module root" value="Binaries" />
+                        <choice label="&amp;Data" help="Adds a data folder to module root" value="Data" />
+                </parameter>
+                <parameter name='Options' type='multichoice' prompt='Select one or more of the following tooling options:' default='1,2,3' store='text' >
+                        <choice label='&amp;None' help="No tooling options specified." value="None"/>
+                        <choice label='Add &amp;Git .gitignore file' help="Adds a .gitignore file." value="Git"/>
+                        <choice label='Add &amp;Pester test support' help="Adds test directory and Pester test for the module manifest file." value="Pester"/>
+                        <choice label='Add PSScript&amp;Analyzer support' help="Adds script analysis support using PSScriptAnalyzer." value="PSScriptAnalyzer"/>
+                </parameter>
+                <parameter name='Editor' type='choice' prompt='Select one of the supported script editors for better editor integration (or None):' default='1' store='text' >
+                        <choice label='&amp;None' help="No editor specified." value="None"/>
+                        <choice label='Visual Studio &amp;Code' help="Your editor is Visual Studio Code." value="VSCode"/>
+                </parameter>
+        </parameters>
+        <content>
+                <message>&#10;&#10;Scaffolding your PowerShell Module...&#10;&#10;&#10;</message>
+                <newModuleManifest destination='${PLASTER_PARAM_ModuleName}.psd1' moduleVersion='$PLASTER_PARAM_Version' rootModule='${PLASTER_PARAM_ModuleName}.psm1' author='$PLASTER_PARAM_FullName' description='$PLASTER_PARAM_ModuleDesc' encoding='UTF8-NoBOM'/>
+                <file source='src\moduleTemplate.psm1' destination='${PLASTER_PARAM_ModuleName}.psm1'/>
+                <file condition='$PLASTER_PARAM_Options -contains "Git"' source='src\gitignore.txt' destination='.gitignore' />
+                <file source='src\ReleaseNotes.md' destination='docs\ReleaseNotes.md'/>
+                <file source='src\InstallNotes.md' destination='docs\InstallNotes.md'/>
+                <file source='src\README.md' destination='README.md'/>
+
+                <message> Creating you folders for module: $PLASTER_PARAM_ModuleName </message>
+                <file condition='$PLASTER_PARAM_FunctionFolders -contains "Public"' destination='Public\' source='' />
+                <file condition='$PLASTER_PARAM_FunctionFolders -contains "Private"' destination='Private\' source='' />
+                <file condition='$PLASTER_PARAM_FunctionFolders -contains "Classes"' destination='Classes\' source='' />
+                <file condition='$PLASTER_PARAM_FunctionFolders -contains "Binaries"' destination='Binaries\' source='' />
+                <file condition='$PLASTER_PARAM_FunctionFolders -contains "Data"' destination='Data\' source='' />
+                <message> Creating function: PLASTER_PARAM_FunctionName and tests for module: $PLASTER_PARAM_ModuleName </message>
+                <templateFile source='src\functionTemplate.ps1' destination='Public\${PLASTER_PARAM_FunctionName}.ps1'/>
+                <templateFile source='src\testTemplate.ps1' destination='tests\${PLASTER_PARAM_FunctionName}.test.ps1'/>
+                <templateFile condition="$PLASTER_PARAM_Options -contains 'Pester'" source='tests\Module.Test.ps1' destination='tests\${PLASTER_PARAM_ModuleName}.Test.ps1' />
+                <templateFile condition="$PLASTER_PARAM_Options -contains 'Pester'" source='tests\Shared.Test.ps1' destination='tests\Shared.Test.ps1' />
+                <templateFile condition="($PLASTER_PARAM_Options -contains 'Pester')" source='tests\Project.Test.ps1' destination='tests\Project.Test.ps1'/>
+                <templateFile condition="($PLASTER_PARAM_Options -contains 'Pester')" source='tests\Help.Test.ps1' destination='tests\Help.Test.ps1'/>
+                <templateFile condition="($PLASTER_PARAM_Options -contains 'Pester')" source='tests\Help.Exceptions.ps1' destination='tests\Help.Exceptions.ps1'/>
+
+                <file condition="($PLASTER_PARAM_Editor -eq 'VSCode') -and ($PLASTER_PARAM_Options -contains 'Pester')" source='editor\VSCode\task_pester.json' destination='.vscode\tasks.json' />
+                <file condition="($PLASTER_PARAM_Editor -eq 'VSCode') -and ($PLASTER_PARAM_Options -contains 'PSScriptAnalyzer')" source='editor\VSCode\settings.json' destination='.vscode\settings.json' />
+
+                <message> Creating help and license files </message>
+                <templateFile source='docs\en-US\about_Module.help.txt' destination='docs\en-US\about_${PLASTER_PARAM_ModuleName}.help.txt'/>
+                <templateFile condition="$PLASTER_PARAM_License -eq 'GNU'" source='license\GNU.txt' destination='docs\LICENSE.txt' />
+                <templateFile condition="$PLASTER_PARAM_License -eq 'MIT'" source='license\MIT.txt' destination='docs\LICENSE.txt' />
+
+                <message> Requires modules </message>
+                <requireModule name="Pester" condition='$PLASTER_PARAM_Options -contains "Pester"' minimumVersion="3.4.0" message="Without Pester, you will not be able to run the provided Pester test to validate your module manifest file.`nWithout version 3.4.0, VS Code will not display Pester warnings and errors in the Problems panel."/>
+                <requireModule name="PSScriptAnalyzer" condition='$PLASTER_PARAM_Options -contains "PSScriptAnalyzer"' message="Without PSScriptAnalyzer, you will not be able to perform script analysis, or use the provided options to control script analysis."/>
+                <message> Your new PowerShell module project '$PLASTER_PARAM_ModuleName' has been created. </message>
+                <message condition="$PLASTER_PARAM_Options -contains 'Pester'">
+                        A Pester test has been created to validate the module's manifest file.  Add additional tests to the test directory.
+                        You can run the Pester tests in your project by executing the 'test' task.  Press Ctrl+P, then type 'task test'.
+                </message>
+        </content>
+</plasterManifest>
