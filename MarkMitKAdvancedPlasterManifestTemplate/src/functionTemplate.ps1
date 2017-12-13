@@ -81,3 +81,5 @@ function <%= $PLASTER_PARAM_FunctionName %> {
     end {
     }
 }
+
+Export-ModuleMember -Function <%= $PLASTER_PARAM_FunctionName %>
