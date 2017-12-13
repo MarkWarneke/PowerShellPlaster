@@ -3,7 +3,7 @@ $script:ModuleName = '<%= $PLASTER_PARAM_ModuleName %>'
 Get-Module $ModuleName | Remove-Module
 $ModuleBase = Split-Path -Parent $MyInvocation.MyCommand.Path
 # For tests in .\Tests subdirectory
-if ((Split-Path $ModuleBase -Leaf) -eq 'Tests') {
+if ((Split-Path $ModuleBase -Leaf) -eq 'Test') {
     $ModuleBase = Split-Path $ModuleBase -Parent
 }
 ## this variable is for the VSTS tasks and is to be used for refernecing any mock artifacts
