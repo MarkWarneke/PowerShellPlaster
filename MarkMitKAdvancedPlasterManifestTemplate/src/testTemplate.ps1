@@ -13,7 +13,7 @@ Describe "<%= $PLASTER_PARAM_FunctionName %> function unit tests" -Tags Build , 
 
     It "Rule <%= $PLASTER_PARAM_FunctionName %>" {
 
-        <%= $PLASTER_PARAM_FunctionName %> | Should Be $true
+        # <%= $PLASTER_PARAM_FunctionName %> | Should Be $true
     }
 
 }
