@@ -13,7 +13,7 @@ Get-Module $ModuleName | Remove-Module
 $ModuleBase = Split-Path -Parent $MyInvocation.MyCommand.Path
 $FunctionHelpTestExceptions = Get-Content -Path "$ModuleBase\Help.Exceptions.ps1"
 # For tests in .\Tests subdirectory
-if ((Split-Path $ModuleBase -Leaf) -eq 'Tests') {
+if ((Split-Path $ModuleBase -Leaf) -eq 'Test') {
     $ModuleBase = Split-Path $ModuleBase -Parent
 }
 Import-Module $ModuleBase\$ModuleName.psd1 -PassThru -ErrorAction Stop | Out-Null

@@ -61,12 +61,12 @@ https://github.com/SQLDBAWithABeard/PlasterTemplate
                 <file condition='$PLASTER_PARAM_FunctionFolders -contains "Data"' destination='Data\' source='' />
                 <message> Creating function: PLASTER_PARAM_FunctionName and tests for module: $PLASTER_PARAM_ModuleName </message>
                 <templateFile source='src\functionTemplate.ps1' destination='Public\${PLASTER_PARAM_FunctionName}.ps1'/>
-                <templateFile source='src\testTemplate.ps1' destination='tests\${PLASTER_PARAM_FunctionName}.test.ps1'/>
-                <templateFile condition="$PLASTER_PARAM_Options -contains 'Pester'" source='tests\Module.Test.ps1' destination='tests\${PLASTER_PARAM_ModuleName}.Test.ps1' />
-                <templateFile condition="$PLASTER_PARAM_Options -contains 'Pester'" source='tests\Shared.Test.ps1' destination='tests\Shared.Test.ps1' />
-                <templateFile condition="($PLASTER_PARAM_Options -contains 'Pester')" source='tests\Project.Test.ps1' destination='tests\Project.Test.ps1'/>
-                <templateFile condition="($PLASTER_PARAM_Options -contains 'Pester')" source='tests\Help.Test.ps1' destination='tests\Help.Test.ps1'/>
-                <templateFile condition="($PLASTER_PARAM_Options -contains 'Pester')" source='tests\Help.Exceptions.ps1' destination='tests\Help.Exceptions.ps1'/>
+                <templateFile source='src\testTemplate.ps1' destination='Test\${PLASTER_PARAM_FunctionName}.Tests.ps1'/>
+                <templateFile condition="$PLASTER_PARAM_Options -contains 'Pester'" source='test\Module.Tests.ps1' destination='Test\${PLASTER_PARAM_ModuleName}.Tests.ps1' />
+                <templateFile condition="$PLASTER_PARAM_Options -contains 'Pester'" source='test\Shared.Tests.ps1' destination='Test\Shared.Tests.ps1' />
+                <templateFile condition="($PLASTER_PARAM_Options -contains 'Pester')" source='test\Project.Tests.ps1' destination='Test\Project.Tests.ps1'/>
+                <templateFile condition="($PLASTER_PARAM_Options -contains 'Pester')" source='test\Help.Tests.ps1' destination='Test\Help.Tests.ps1'/>
+                <templateFile condition="($PLASTER_PARAM_Options -contains 'Pester')" source='test\Help.Exceptions.ps1' destination='Test\Help.Exceptions.ps1'/>
 
                 <file condition="($PLASTER_PARAM_Editor -eq 'VSCode') -and ($PLASTER_PARAM_Options -contains 'Pester')" source='editor\VSCode\task_pester.json' destination='.vscode\tasks.json' />
                 <file condition="($PLASTER_PARAM_Editor -eq 'VSCode') -and ($PLASTER_PARAM_Options -contains 'PSScriptAnalyzer')" source='editor\VSCode\settings.json' destination='.vscode\settings.json' />
